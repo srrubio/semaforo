@@ -1,0 +1,34 @@
+{
+  "players": [
+    {
+      "nickName": "Sergio",
+      "score": 2,
+      "maxScore": 2,
+      "id": 1
+    },
+    {
+      "nickName": "rtew",
+      "score": 0,
+      "maxScore": 44,
+      "id": 2
+    },
+    {
+      "nickName": "ds",
+      "score": 0,
+      "maxScore": 0,
+      "id": 3
+    },
+    {
+      "nickName": "dsa",
+      "score": 0,
+      "maxScore": 18,
+      "id": 4
+    },
+    {
+      "nickName": "sa",
+      "score": 0,
+      "maxScore": 0,
+      "id": 5
+    }
+  ]
+}

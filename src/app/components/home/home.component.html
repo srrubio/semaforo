@@ -1,0 +1,37 @@
+<ng-container class="container">
+  <!-- Image and text -->
+  <nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand" href="#">
+      <img
+        src="../../../assets/icons/trafficLight.png"
+        width="30"
+        height="30"
+        class="d-inline-block align-top"
+        alt=""
+      />
+      Traffic light game
+    </a>
+  </nav>
+  <mat-card class="col-xs-12">
+    <mat-card-content>
+      <form #form="ngForm" (ngSubmit)="startGame(form)">
+        <mat-form-field appearance="fill">
+          <mat-label>Player name</mat-label>
+          <input
+            matInput
+            type="text"
+            name="nickName"
+            [(ngModel)]="nickName"
+            required
+          />
+          <mat-error *ngIf="form.controls['nickName']?.invalid"
+            >Player name is required.</mat-error
+          >
+        </mat-form-field>
+        <button mat-raised-button color="primary" [disabled]="form.invalid">
+          Start game!
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</ng-container>
