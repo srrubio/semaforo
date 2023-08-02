@@ -4,6 +4,13 @@ import {
   fakeAsync,
   tick,
 } from '@angular/core/testing';
+import {
+  screen,
+  fireEvent,
+  getByTestId,
+  render,
+} from '@testing-library/angular';
+import '@testing-library/jest-dom';
 
 import { HomeComponent } from './home.component';
 import { PlayerService } from '../../services/player.service';
@@ -118,4 +125,32 @@ describe('HomeComponent', () => {
     expect(spyGetAllPlayer).toHaveBeenCalled();
     expect(spyGetPlayerByName).toHaveBeenCalledWith('existingPlayer');
   }));
+
+  it('should check if start button is clicked', () => {
+    const startButton =
+      fixture.debugElement.nativeElement.querySelector('button');
+    const spy = jest.spyOn(component, 'startGame');
+
+    startButton.click();
+
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('should display the mat-error when input is focused and then blured', async () => {
+    const inputElement = screen.getByLabelText('Nickname');
+
+    fireEvent.focus(inputElement);
+    fireEvent.blur(inputElement);
+    expect(screen.findByText('Nickname is required!')).toBeTruthy;
+  });
+
+  it('should display the mat-error when input is touched and then cleared', async () => {
+    render(HomeComponent);
+    const inputElement = screen.getByLabelText('Nickname');
+
+    fireEvent.input(inputElement, { target: { value: 'A' } });
+    fireEvent.input(inputElement, { target: { value: '' } });
+
+    expect(screen.findByText('Nickname is required!')).toBeTruthy;
+  });
 });

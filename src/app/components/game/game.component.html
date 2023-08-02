@@ -1,25 +1,26 @@
+<nav class="navbar navbar-dark bg-dark">
+  <a class="navbar-brand" href="/home">
+    <img
+      src="../../../assets/icons/trafficLight.png"
+      width="30"
+      height="30"
+      class="d-inline-block align-top"
+      alt=""
+    />
+    Traffic light game
+  </a>
+  <button class="btn btn-secondary" (click)="back()">Back</button>
+</nav>
 <div class="container" *ngIf="player">
-  Bienvenido {{ player | json }} hola {{ player.nickName }}
-  <button mat-raised-button mat-button color="primary" (click)="back()">
-    Back
-  </button>
-  <h1>Score: {{ player.score }}</h1>
-  <!-- <div
-  [ngStyle]="{
-    'background-color': color,
-    width: '100px',
-    height: '100px'
-  }"
->
-  {{ color === "red" ? "RED" : "GREEN" }}
-</div> -->
+  <h1>Welcome {{ player.nickName }}</h1>
+  <h2>Highscore: {{ player.maxScore }}</h2>
+  <h2>Score: {{ player.score }}</h2>
   <ng-container *ngIf="color === 'green'; else red">
     <img src="../../../assets/icons/trafficLightGreen.png" />
   </ng-container>
   <ng-template #red>
     <img src="../../../assets/icons/trafficLightRed.png" />
   </ng-template>
-
   <div class="buttons">
     <button mat-raised-button mat-button color="primary" (click)="move('left')">
       Left

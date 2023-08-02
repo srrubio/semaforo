@@ -1,17 +1,31 @@
-.container {
+.home-container {
     display: flex;
 	flex-direction: column;
 	flex-wrap: nowrap;
 	justify-content: center;
 	align-items: center;
 	align-content: center;
+    height: 100vh;
+    background-color: #ECDFDB;
 
-    mat-card {
-        margin: auto;
+    img {
+        height: 150px;
+        width: 150px;
+        margin-bottom: 2%;
+    }
+        
+    .form-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        mat-card-content {
+            form {
+                mat-form-field {
+                    width: 100%;
+                }
+            }
 
-        button {
-            display: inline;
-            margin: auto;
         }
     }
 }

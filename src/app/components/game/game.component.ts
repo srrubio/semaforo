@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PlayerService } from '../../services/player.service';
 import { Player } from '../../interfaces/player';
@@ -52,6 +51,7 @@ export class GameComponent implements OnInit, OnDestroy {
       this.lastButton = button;
     } else {
       this.player.score = 0;
+      this.lastButton = '';
       this.save();
     }
   }
@@ -73,13 +73,15 @@ export class GameComponent implements OnInit, OnDestroy {
 
   startInterval() {
     this.color = 'green';
-
     this.interval = setInterval(() => {
+      console.log('interval');
       this.greenLight = this.calculateGreenTime(this.player.score);
       setTimeout(() => {
+        console.log('interval red');
         this.color = 'red';
       }, this.greenLight);
       setTimeout(() => {
+        console.log('interval green');
         this.color = 'green';
       }, 3000);
     }, 10000);
@@ -90,7 +92,7 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   calculateGreenTime(score: number): number {
-    let baseTime = Math.max(10000 - score * 100);
+    let baseTime = 10000 - score * 100;
     if (baseTime < 2000) baseTime = 2000;
     const randomVariation = this.random(-1500, 1500);
     console.log(baseTime + randomVariation);

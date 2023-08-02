@@ -8,6 +8,11 @@ import { Player } from '../interfaces/player';
 import { HttpClientModule } from '@angular/common/http';
 
 const baseUrl = 'http://localhost:3000';
+const playerMocks: Player[] = [
+  { nickName: 'Player 1', score: 0, maxScore: 0 },
+  { nickName: 'Player 2', score: 0, maxScore: 0 },
+  { nickName: 'Player 3', score: 0, maxScore: 0 },
+];
 describe('PlayerService', () => {
   let service: PlayerService;
   let httpMock: HttpTestingController;
@@ -26,19 +31,25 @@ describe('PlayerService', () => {
   });
 
   it('should get all data', () => {
-    const mockData: Player[] = [
-      { nickName: 'Player 1', score: 0, maxScore: 0 },
-      { nickName: 'Player 2', score: 0, maxScore: 0 },
-      { nickName: 'Player 3', score: 0, maxScore: 0 },
-    ];
-
     service.getAllPlayer().subscribe((data) => {
-      expect(data).toEqual(mockData);
+      expect(data).toEqual(playerMocks);
     });
 
     const req = httpMock.expectOne(baseUrl + '/players');
     expect(req.request.method).toBe('GET');
-    req.flush(mockData);
+    req.flush(playerMocks);
+  });
+
+  it('should get player by name', () => {
+    const nickName = 'Player 1';
+    const player: Player[] = [{ nickName: 'Player 1', score: 0, maxScore: 0 }];
+    service.getPlayerByName('Player 1').subscribe((data) => {
+      expect(data).toEqual(playerMocks);
+    });
+
+    const req = httpMock.expectOne(baseUrl + `/players?nickName=${nickName}`);
+    expect(req.request.method).toBe('GET');
+    req.flush(playerMocks[0]);
   });
 
   it('should create a player', () => {
@@ -51,5 +62,19 @@ describe('PlayerService', () => {
     const req = httpMock.expectOne(baseUrl + '/players');
     expect(req.request.method).toBe('POST');
     req.flush(newData);
+  });
+
+  it('should update data', () => {
+    const id = 1;
+    const updatedPlayer = { nickName: 'Player 4', score: 0, maxScore: 0 };
+    const mockResponse = { ...updatedPlayer };
+
+    service.updatePlayer(id, updatedPlayer).subscribe((data) => {
+      expect(data).toEqual(mockResponse);
+    });
+
+    const req = httpMock.expectOne(baseUrl + `/players/${id}`);
+    expect(req.request.method).toBe('PUT');
+    req.flush(mockResponse);
   });
 });
