@@ -5,7 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build:prod": "ng build && json-server --watch src/app/mocks/list.json --port 3000",
+    "build:prod": "ng build && npm install json-server && json-server --watch src/app/mocks/list.json --port 3000",
     "watch": "ng build --watch --configuration development",
     "mock": "json-server --watch src/app/mocks/list.json",
     "test": "jest",
