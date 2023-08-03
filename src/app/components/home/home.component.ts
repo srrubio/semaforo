@@ -40,17 +40,25 @@ export class HomeComponent implements OnInit {
         (player) => player.nickName === this.nickName
       );
       if (!nicknameExists) {
-        this.service
-          .createPlayer({ nickName: this.nickName, score: 0, maxScore: 0 })
-          .subscribe((player: any) => {
-            if (player && player.id && player.id !== undefined)
-              this.router.navigate(['/game', player.id]);
-          });
+        this.createPlayer();
       } else {
-        this.service.getPlayerByName(this.nickName).subscribe((resp: any) => {
-          if (resp.length > 0) this.router.navigate(['/game', resp[0]?.id]);
-        });
+        this.loadPlayer();
       }
+    });
+  }
+
+  createPlayer() {
+    this.service
+      .createPlayer({ nickName: this.nickName, score: 0, maxScore: 0 })
+      .subscribe((player: any) => {
+        if (player && player.id && player.id !== undefined)
+          this.router.navigate(['/game', player.id]);
+      });
+  }
+
+  loadPlayer() {
+    this.service.getPlayerByName(this.nickName).subscribe((resp: any) => {
+      if (resp.length > 0) this.router.navigate(['/game', resp[0]?.id]);
     });
   }
 

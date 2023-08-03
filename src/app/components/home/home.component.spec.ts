@@ -102,6 +102,7 @@ describe('HomeComponent', () => {
     tick();
 
     expect(spyGetAllPlayer).toHaveBeenCalled();
+    component.createPlayer();
     expect(spyCreatePlayer).toHaveBeenCalledWith({
       nickName: component.nickName,
       score: 0,
@@ -125,6 +126,7 @@ describe('HomeComponent', () => {
     tick();
 
     expect(spyGetAllPlayer).toHaveBeenCalled();
+    component.loadPlayer();
     expect(spyGetPlayerByName).toHaveBeenCalledWith('existingPlayer');
   }));
 
@@ -138,21 +140,27 @@ describe('HomeComponent', () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  it('should display the mat-error when input is focused and then blured', async () => {
-    const inputElement = screen.getByLabelText('Nickname');
+  describe('validation inpus', () => {
+    it('should display the mat-error when input is focused and then blured', async () => {
+      const inputElement = screen.getByLabelText('Nickname');
 
-    fireEvent.focus(inputElement);
-    fireEvent.blur(inputElement);
-    expect(screen.findByText('Nickname is required!')).toBeTruthy;
+      fireEvent.focus(inputElement);
+      fireEvent.blur(inputElement);
+      expect(screen.findByText('Nickname is required!')).toBeTruthy;
+    });
+
+    it('should display the mat-error when input is touched and then cleared', async () => {
+      render(HomeComponent);
+      const inputElement = screen.getByLabelText('Nickname');
+
+      fireEvent.input(inputElement, { target: { value: 'A' } });
+      fireEvent.input(inputElement, { target: { value: '' } });
+
+      expect(screen.findByText('Nickname is required!')).toBeTruthy;
+    });
   });
 
-  it('should display the mat-error when input is touched and then cleared', async () => {
-    render(HomeComponent);
-    const inputElement = screen.getByLabelText('Nickname');
-
-    fireEvent.input(inputElement, { target: { value: 'A' } });
-    fireEvent.input(inputElement, { target: { value: '' } });
-
-    expect(screen.findByText('Nickname is required!')).toBeTruthy;
+  it('should openDialog', () => {
+    component.openDialog();
   });
 });
