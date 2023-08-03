@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PlayerService } from '../../services/player.service';
 import { Player } from '../../interfaces/player';
 import { DeviceService } from '../../services/device.service';
+import { LocalStorageService } from '../../services/local-storage.service';
 
 @Component({
   selector: 'app-game',
@@ -22,14 +23,17 @@ export class GameComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private service: PlayerService,
-    private deviceService: DeviceService
+    private deviceService: DeviceService,
+    private storage: LocalStorageService
   ) {}
 
   ngOnInit() {
     this.route.params.subscribe((params: any) => {
       this.playerId = params['id'];
     });
-    this.getJugadorData();
+    this.storage.loadPlayerData()
+      ? (this.player = this.storage.loadPlayerData())
+      : this.getJugadorData();
   }
 
   ngOnDestroy() {
@@ -52,6 +56,7 @@ export class GameComponent implements OnInit, OnDestroy {
       if (this.player.maxScore < this.player.score)
         this.player.maxScore = this.player.score;
       this.lastButton = button;
+      this.setStorageData(this.player);
     } else {
       this.player.score = 0;
       this.lastButton = '';
@@ -59,8 +64,13 @@ export class GameComponent implements OnInit, OnDestroy {
     }
   }
 
+  setStorageData(player: Player) {
+    this.storage.savePlayerData(player);
+  }
+
   save() {
     this.service.updatePlayer(this.playerId, this.player).subscribe();
+    this.storage.removePlayerData();
   }
 
   getJugadorData() {
