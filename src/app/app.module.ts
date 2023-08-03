@@ -10,6 +10,7 @@ import { GameComponent } from './components/game/game.component';
 import { HttpClientModule } from '@angular/common/http';
 import { PlayerService } from './services/player.service';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { DeviceService } from './services/device.service';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, GameComponent],
@@ -22,12 +23,10 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     ReactiveFormsModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),
-      // Register the ServiceWorker as soon as the application is stable
-      // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000'
+      registrationStrategy: 'registerWhenStable:30000',
     }),
   ],
-  providers: [PlayerService],
+  providers: [PlayerService, DeviceService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
