@@ -6,11 +6,9 @@ import { environment } from '../../environments/environment';
 
 @Injectable()
 export class PlayerService {
-  private baseUrl!: string;
+  private baseUrl = 'https://data-server-rm1u.onrender.com';
 
-  constructor(private http: HttpClient) {
-    this.baseUrl = environment.apiUrl;
-  }
+  constructor(private http: HttpClient) {}
 
   getAllPlayer(): Observable<Player[]> {
     return this.http.get<Player[]>(this.baseUrl + '/players');
