@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PlayerService } from '../../services/player.service';
 import { Player } from '../../interfaces/player';
+import { DeviceService } from 'src/app/services/device.service';
 
 @Component({
   selector: 'app-game',
@@ -20,11 +21,12 @@ export class GameComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private service: PlayerService
+    private service: PlayerService,
+    private deviceService: DeviceService
   ) {}
 
   ngOnInit() {
-    this.route.params.subscribe((params) => {
+    this.route.params.subscribe((params: any) => {
       this.playerId = params['id'];
     });
     this.getJugadorData();
@@ -50,6 +52,7 @@ export class GameComponent implements OnInit, OnDestroy {
         this.player.maxScore = this.player.score;
       this.lastButton = button;
     } else {
+      this.deviceService.vibrate(500);
       this.player.score = 0;
       this.lastButton = '';
       this.save();
