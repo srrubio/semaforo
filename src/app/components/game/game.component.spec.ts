@@ -54,6 +54,24 @@ describe('GameComponent', () => {
       expect(component.lastButton).toBe('left');
     });
 
+    it('should press twice the same button and score its 1', () => {
+      component.color = 'green';
+      component.lastButton = 'left';
+      component.player = {
+        nickName: 'Player 1',
+        score: 1,
+        maxScore: 15,
+      };
+
+      component.move('left');
+      expect(component.player.score).toBe(0);
+      component.move('left');
+      expect(component.player.score).toBe(0);
+
+      expect(component.player.maxScore).toBe(15);
+      expect(component.lastButton).toBe('left');
+    });
+
     it('should press differents buttons', () => {
       component.color = 'green';
       component.lastButton = 'left';

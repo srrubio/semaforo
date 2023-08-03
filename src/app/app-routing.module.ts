@@ -7,6 +7,7 @@ const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'game/:id', component: GameComponent },
+  { path: '**', redirectTo: '/home' },
 ];
 
 @NgModule({

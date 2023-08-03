@@ -44,7 +44,7 @@ export class GameComponent implements OnInit, OnDestroy {
       if (button !== this.lastButton) {
         this.player.score++;
       } else {
-        this.player.score--;
+        if (this.player.score >= 1) this.player.score--;
       }
       if (this.player.maxScore < this.player.score)
         this.player.maxScore = this.player.score;

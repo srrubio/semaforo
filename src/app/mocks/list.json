@@ -14,8 +14,8 @@
     },
     {
       "nickName": "sergio",
-      "score": 0,
-      "maxScore": 0,
+      "score": 4,
+      "maxScore": 4,
       "id": 3
     },
     {
@@ -53,6 +53,12 @@
       "score": 0,
       "maxScore": 0,
       "id": 9
+    },
+    {
+      "nickName": "Sergio",
+      "score": 7,
+      "maxScore": 7,
+      "id": 10
     }
   ]
 }

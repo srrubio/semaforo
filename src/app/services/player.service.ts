@@ -1,32 +1,36 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
 import { Player } from '../interfaces/player';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class PlayerService {
-  private baseUrl = 'http://localhost:3000/players';
+  private baseUrl!: string;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.baseUrl = environment.apiUrl;
+  }
 
   getAllPlayer(): Observable<Player[]> {
-    return this.http.get<Player[]>(this.baseUrl);
+    return this.http.get<Player[]>(this.baseUrl + '/players');
   }
 
   getPlayer(id: number): Observable<Player> {
-    return this.http.get<Player>(`${this.baseUrl}/${id}`);
+    return this.http.get<Player>(`${this.baseUrl}/players/${id}`);
   }
 
   getPlayerByName(nickname: string): Observable<Player> {
-    return this.http.get<Player>(`${this.baseUrl}?nickName=${nickname}`);
+    return this.http.get<Player>(
+      `${this.baseUrl}/players?nickName=${nickname}`
+    );
   }
 
   createPlayer(player: Player): Observable<Player> {
-    return this.http.post<Player>(this.baseUrl, player);
+    return this.http.post<Player>(this.baseUrl + '/players', player);
   }
 
   updatePlayer(id: number, player: Player): Observable<any> {
-    return this.http.put<Player>(`${this.baseUrl}/${id}`, player);
+    return this.http.put<Player>(`${this.baseUrl}/players/${id}`, player);
   }
 }
