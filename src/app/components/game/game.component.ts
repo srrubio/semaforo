@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PlayerService } from '../../services/player.service';
 import { Player } from '../../interfaces/player';
-import { DeviceService } from 'src/app/services/device.service';
+import { DeviceService } from '../../services/device.service';
 
 @Component({
   selector: 'app-game',

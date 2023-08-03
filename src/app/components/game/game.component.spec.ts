@@ -6,6 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { PlayerService } from '../../services/player.service';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
+import { DeviceService } from '../../services/device.service';
 
 describe('GameComponent', () => {
   let component: GameComponent;
@@ -17,7 +18,7 @@ describe('GameComponent', () => {
     TestBed.configureTestingModule({
       declarations: [GameComponent],
       imports: [RouterTestingModule, HttpClientModule],
-      providers: [PlayerService, provideAnimations()],
+      providers: [PlayerService, DeviceService, provideAnimations()],
     });
     fixture = TestBed.createComponent(GameComponent);
     component = fixture.componentInstance;

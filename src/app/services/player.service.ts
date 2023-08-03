@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Player } from '../interfaces/player';
-import { environment } from '../../environments/environment';
 
 @Injectable()
 export class PlayerService {
