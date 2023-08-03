@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Player } from '../../interfaces/player';
 import { PlayerService } from '../../services/player.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +13,11 @@ import { PlayerService } from '../../services/player.service';
 export class HomeComponent {
   nickName!: string;
 
-  constructor(private router: Router, private service: PlayerService) {}
+  constructor(
+    private router: Router,
+    private service: PlayerService,
+    public dialog: MatDialog
+  ) {}
 
   startGame(form: any) {
     if (form.valid) {
@@ -38,6 +44,12 @@ export class HomeComponent {
           if (resp.length > 0) this.router.navigate(['/game', resp[0]?.id]);
         });
       }
+    });
+  }
+
+  openDialog(): void {
+    this.dialog.open(DialogComponent, {
+      width: '300px',
     });
   }
 }

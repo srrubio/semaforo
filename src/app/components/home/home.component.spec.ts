@@ -24,6 +24,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { Player } from '../../interfaces/player';
+import { MatDialogModule } from '@angular/material/dialog';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -41,6 +42,7 @@ describe('HomeComponent', () => {
         MatInputModule,
         FormsModule,
         HttpClientModule,
+        MatDialogModule,
       ],
       providers: [PlayerService, provideAnimations()],
     });

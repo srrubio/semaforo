@@ -11,9 +11,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { PlayerService } from './services/player.service';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { DeviceService } from './services/device.service';
+import { DialogComponent } from './components/dialog/dialog.component';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, GameComponent],
+  declarations: [AppComponent, HomeComponent, GameComponent, DialogComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
