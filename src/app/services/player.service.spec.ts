@@ -7,7 +7,7 @@ import { PlayerService } from './player.service';
 import { Player } from '../interfaces/player';
 import { HttpClientModule } from '@angular/common/http';
 
-const baseUrl = 'http://localhost:3000';
+const baseUrl = 'https://data-server-rm1u.onrender.com';
 const playerMocks: Player[] = [
   { nickName: 'Player 1', score: 0, maxScore: 0 },
   { nickName: 'Player 2', score: 0, maxScore: 0 },
