@@ -1,64 +1,22 @@
 {
   "players": [
     {
-      "nickName": "jesus",
+      "nickName": "Sergio",
       "score": 0,
-      "maxScore": 0,
+      "maxScore": 15,
       "id": 1
     },
     {
-      "nickName": "as",
+      "nickName": "Jesús",
       "score": 0,
-      "maxScore": 0,
+      "maxScore": 5,
       "id": 2
     },
     {
-      "nickName": "sergio",
-      "score": 4,
-      "maxScore": 4,
+      "nickName": "David",
+      "score": 0,
+      "maxScore": 18,
       "id": 3
-    },
-    {
-      "nickName": "dsa",
-      "score": 0,
-      "maxScore": 0,
-      "id": 4
-    },
-    {
-      "nickName": "setr",
-      "score": 0,
-      "maxScore": 0,
-      "id": 5
-    },
-    {
-      "nickName": "ser",
-      "score": 0,
-      "maxScore": 0,
-      "id": 6
-    },
-    {
-      "nickName": "a",
-      "score": 0,
-      "maxScore": 17,
-      "id": 7
-    },
-    {
-      "nickName": "ds",
-      "score": 0,
-      "maxScore": 0,
-      "id": 8
-    },
-    {
-      "nickName": "sew",
-      "score": 0,
-      "maxScore": 0,
-      "id": 9
-    },
-    {
-      "nickName": "Sergio",
-      "score": 7,
-      "maxScore": 7,
-      "id": 10
     }
   ]
 }

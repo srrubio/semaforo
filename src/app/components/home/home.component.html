@@ -2,7 +2,10 @@
   <mat-card class="col-lg-12 col-md-12 col-s-12 col-xs-12">
     <mat-card-content class="home-container">
       <h1>Traffic light game</h1>
-      <img src="../../../assets/icons/trafficLight.png" alt="trafficLight" />
+      <img
+        src="../../../assets/icons/trafficLight-152x152.png"
+        alt="trafficLight"
+      />
       <form #form="ngForm" (ngSubmit)="startGame(form)" class="form-container">
         <mat-form-field appearance="fill">
           <mat-label>Nickname</mat-label>
@@ -24,6 +27,9 @@
         </button>
         <button mat-raised-button color="primary" (click)="openDialog()">
           How to play
+        </button>
+        <button mat-raised-button color="primary" (click)="ranking()">
+          Ranking
         </button>
       </form>
     </mat-card-content>

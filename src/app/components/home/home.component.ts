@@ -67,4 +67,8 @@ export class HomeComponent implements OnInit {
       width: '300px',
     });
   }
+
+  ranking() {
+    this.router.navigate(['/ranking']);
+  }
 }

@@ -1,4 +1,10 @@
 .container {
+    h1, h5 {
+        margin: 1rem;
+        display: flex;
+        justify-content: center;
+    }
+
     mat-dialog-actions {
         display: flex;
         justify-content: center;

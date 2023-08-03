@@ -12,9 +12,16 @@ import { PlayerService } from './services/player.service';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { DeviceService } from './services/device.service';
 import { DialogComponent } from './components/dialog/dialog.component';
+import { RankingComponent } from './components/ranking/ranking.component';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, GameComponent, DialogComponent],
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    GameComponent,
+    DialogComponent,
+    RankingComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,

@@ -36,6 +36,13 @@ describe('GameComponent', () => {
     component.save();
   });
 
+  it('should go back', () => {
+    const spy = jest.spyOn(router, 'navigate');
+    component.back();
+
+    expect(spy).toHaveBeenCalledWith(['/home']);
+  });
+
   describe('move options', () => {
     it('should press twice the same button', () => {
       component.color = 'green';
