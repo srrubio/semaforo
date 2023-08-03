@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class DeviceService {
   vibrate(duration: number) {
     if ('vibrate' in navigator) {

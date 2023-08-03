@@ -42,13 +42,11 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   move(button: string) {
-    this.deviceService.vibrate(500);
     if (this.color !== 'red') {
       if (button !== this.lastButton) {
         this.player.score++;
       } else {
-        window.navigator.vibrate(200);
-        this.deviceService.vibrate(500);
+        this.deviceService.vibrate(200);
         if (this.player.score >= 1) this.player.score--;
       }
       if (this.player.maxScore < this.player.score)
