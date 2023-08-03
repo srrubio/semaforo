@@ -22,13 +22,28 @@
             >Nickname is required!</mat-error
           >
         </mat-form-field>
-        <button mat-raised-button color="primary" [disabled]="form.invalid">
+        <button
+          mat-button
+          mat-raised-button
+          color="primary"
+          [disabled]="form.invalid"
+        >
           Start game!
         </button>
-        <button mat-raised-button color="primary" (click)="openDialog()">
+        <button
+          mat-button
+          mat-raised-button
+          color="primary"
+          (click)="openDialog()"
+        >
           How to play
         </button>
-        <button mat-raised-button color="primary" (click)="ranking()">
+        <button
+          mat-button
+          mat-raised-button
+          color="primary"
+          (click)="ranking()"
+        >
           Ranking
         </button>
       </form>
