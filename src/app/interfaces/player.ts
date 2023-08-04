@@ -1,5 +1,5 @@
 export interface Player {
-  id?: string;
+  id?: number;
   nickName: string;
   score: number;
   maxScore: number;

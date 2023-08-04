@@ -4,12 +4,7 @@ import {
   fakeAsync,
   tick,
 } from '@angular/core/testing';
-import {
-  screen,
-  fireEvent,
-  getByTestId,
-  render,
-} from '@testing-library/angular';
+import { screen, fireEvent, render } from '@testing-library/angular';
 import '@testing-library/jest-dom';
 
 import { HomeComponent } from './home.component';
@@ -25,12 +20,14 @@ import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { Player } from '../../interfaces/player';
 import { MatDialogModule } from '@angular/material/dialog';
+import { PLAYERS_MOCK } from '../../mocks/test.mocks';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
   let service: PlayerService;
   let router: Router;
+  let players: Player[] = PLAYERS_MOCK;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -82,10 +79,7 @@ describe('HomeComponent', () => {
   });
 
   it('should create a player if nickname does not exist', fakeAsync(() => {
-    const players: Player[] = [
-      { nickName: 'existingPlayer', score: 0, maxScore: 0 },
-    ];
-    const newplayer: any = {
+    const newPlayer: any = {
       nickName: 'newPlayer',
       score: 0,
       maxScore: 0,
@@ -95,7 +89,7 @@ describe('HomeComponent', () => {
       .mockReturnValue(of(players));
     const spyCreatePlayer = jest
       .spyOn(service, 'createPlayer')
-      .mockReturnValue(of(newplayer));
+      .mockReturnValue(of(newPlayer));
 
     component.nickName = 'newPlayer';
     component.checkIfNickIsUnique();
@@ -111,9 +105,6 @@ describe('HomeComponent', () => {
   }));
 
   it('should load player data if nickname already exists', fakeAsync(() => {
-    const players: Player[] = [
-      { nickName: 'existingPlayer', score: 0, maxScore: 0 },
-    ];
     const spyGetAllPlayer = jest
       .spyOn(service, 'getAllPlayer')
       .mockReturnValue(of(players));
@@ -121,13 +112,13 @@ describe('HomeComponent', () => {
       .spyOn(service, 'getPlayerByName')
       .mockReturnValue(of(players[0]));
 
-    component.nickName = 'existingPlayer';
+    component.nickName = 'Player 1';
     component.checkIfNickIsUnique();
     tick();
 
     expect(spyGetAllPlayer).toHaveBeenCalled();
     component.loadPlayer();
-    expect(spyGetPlayerByName).toHaveBeenCalledWith('existingPlayer');
+    expect(spyGetPlayerByName).toHaveBeenCalledWith('Player 1');
   }));
 
   it('should check if start button is clicked', () => {
@@ -140,7 +131,7 @@ describe('HomeComponent', () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  describe('validation inpus', () => {
+  describe('validation inputs', () => {
     it('should display the mat-error when input is focused and then blured', async () => {
       const inputElement = screen.getByLabelText('Nickname');
 
@@ -162,5 +153,12 @@ describe('HomeComponent', () => {
 
   it('should openDialog', () => {
     component.openDialog();
+  });
+
+  it('should go ranking', () => {
+    const spy = jest.spyOn(router, 'navigate');
+    component.ranking();
+
+    expect(spy).toHaveBeenCalledWith(['/ranking']);
   });
 });

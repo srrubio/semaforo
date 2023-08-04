@@ -7,11 +7,16 @@ import { PlayerService } from '../../services/player.service';
 import { HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { PLAYERS_MOCK } from '../../mocks/test.mocks';
+import { Player } from '../../interfaces/player';
+import { of } from 'rxjs';
 
 describe('RankingComponent', () => {
   let component: RankingComponent;
   let fixture: ComponentFixture<RankingComponent>;
   let router: Router;
+  let service: PlayerService;
+  let players: Player[] = PLAYERS_MOCK;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -26,6 +31,7 @@ describe('RankingComponent', () => {
     });
     fixture = TestBed.createComponent(RankingComponent);
     component = fixture.componentInstance;
+    service = TestBed.inject(PlayerService);
     router = TestBed.inject(Router);
     fixture.detectChanges();
   });
@@ -39,5 +45,15 @@ describe('RankingComponent', () => {
     component.back();
 
     expect(spy).toHaveBeenCalledWith(['/home']);
+  });
+
+  it('should sort data', () => {
+    const spy = jest
+      .spyOn(service, 'getAllPlayer')
+      .mockReturnValue(of(players));
+    component.ngOnInit();
+    players.sort((a, b) => b.maxScore - a.maxScore);
+
+    expect(spy).toHaveBeenCalled();
   });
 });

@@ -7,12 +7,16 @@ import { PlayerService } from '../../services/player.service';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { DeviceService } from '../../services/device.service';
+import { Player } from 'src/app/interfaces/player';
+import { of } from 'rxjs';
+import { PLAYER_MOCK } from '../../mocks/test.mocks';
 
 describe('GameComponent', () => {
   let component: GameComponent;
   let fixture: ComponentFixture<GameComponent>;
   let service: PlayerService;
   let router: Router;
+  let player: Player = PLAYER_MOCK;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -41,6 +45,17 @@ describe('GameComponent', () => {
     component.back();
 
     expect(spy).toHaveBeenCalledWith(['/home']);
+  });
+
+  it('should get player data', () => {
+    component.playerId = 1;
+    const spy = jest.spyOn(service, 'getPlayer').mockReturnValue(of(player));
+
+    component.getJugadorData();
+    component.player = player;
+
+    expect(spy).toHaveBeenCalledWith(component.playerId);
+    expect(component.player).toBe(player);
   });
 
   describe('move options', () => {
@@ -133,6 +148,27 @@ describe('GameComponent', () => {
     });
   });
 
+  describe('intervals', () => {
+    it('should be 3000ms when color is red', () => {
+      component.color = 'red';
+      component.startGame();
+
+      jest.advanceTimersByTime(3000);
+      component.color = 'green';
+
+      expect(component.color).toBe('green');
+    });
+    it('should calculate time when color is green', () => {
+      component.color = 'green';
+      component.startGame();
+      component.calculateGreenTime(0);
+
+      jest.advanceTimersByTime(10000);
+      component.color = 'red';
+
+      expect(component.color).toBe('red');
+    });
+  });
   describe('time', () => {
     it('should get ramdon', () => {
       const min = 5;

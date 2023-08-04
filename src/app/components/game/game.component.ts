@@ -90,13 +90,14 @@ export class GameComponent implements OnInit, OnDestroy {
   startGame() {
     let intervalTime =
       this.color === 'green'
-        ? this.calculateGreenTime(this.player.score)
+        ? this.calculateGreenTime(this.player?.score)
         : 3000;
     this.interval = setTimeout(() => {
       this.color = this.color === 'green' ? 'red' : 'green';
       this.startGame();
     }, intervalTime);
   }
+
   random(min: number, max: number): number {
     return Math.random() * (max - min) + min;
   }
