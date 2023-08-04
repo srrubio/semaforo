@@ -5,11 +5,13 @@ import { Player } from '../interfaces/player';
   providedIn: 'root',
 })
 export class LocalStorageService {
-  private readonly PLAYER_DATA_KEY = 'unsaved_player';
+  readonly PLAYER_DATA_KEY = 'unsaved_player';
+  readonly PLAYERS = 'players';
+  readonly MAX_ID = 'max_id';
 
   constructor() {}
 
-  savePlayerData(playerData: any): void {
+  setPlayerData(playerData: Player): void {
     localStorage.setItem(this.PLAYER_DATA_KEY, JSON.stringify(playerData));
   }
 
@@ -20,5 +22,21 @@ export class LocalStorageService {
 
   removePlayerData() {
     localStorage.removeItem(this.PLAYER_DATA_KEY);
+  }
+
+  setPlayers(players: Player[]) {
+    localStorage.setItem(this.PLAYERS, JSON.stringify(players));
+  }
+
+  loadPlayers() {
+    const players = localStorage.getItem(this.PLAYERS);
+    if (players) {
+      try {
+        return JSON.parse(players);
+      } catch (error) {
+        return null;
+      }
+    }
+    return null;
   }
 }

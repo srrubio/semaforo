@@ -13,6 +13,7 @@ import { LocalStorageService } from '../../services/local-storage.service';
 })
 export class HomeComponent implements OnInit {
   nickName!: string;
+  players!: Player[];
 
   constructor(
     private router: Router,
@@ -22,7 +23,20 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (this.storage.loadPlayerData()) {
+    this.checkStorageData();
+  }
+
+  checkStorageData() {
+    if (navigator.onLine) {
+      this.service.getAllPlayer().subscribe((players: Player[]) => {
+        this.players = players;
+        this.storage.setPlayers(players);
+      });
+    } else {
+      this.players = this.storage.loadPlayers();
+    }
+
+    if (this.storage.loadPlayerData() && navigator.onLine) {
       this.router.navigate(['/game', this.storage.loadPlayerData().id]);
     }
   }
@@ -35,31 +49,50 @@ export class HomeComponent implements OnInit {
 
   checkIfNickIsUnique() {
     let nicknameExists = false;
-    this.service.getAllPlayer().subscribe((players: Player[]) => {
-      nicknameExists = players.some(
-        (player) => player.nickName === this.nickName
-      );
-      if (!nicknameExists) {
-        this.createPlayer();
-      } else {
-        this.loadPlayer();
-      }
-    });
+    nicknameExists = this.players?.some(
+      (player) => player.nickName === this.nickName
+    );
+    if (!nicknameExists) {
+      this.createPlayer();
+    } else {
+      this.loadPlayer();
+    }
   }
 
   createPlayer() {
-    this.service
-      .createPlayer({ nickName: this.nickName, score: 0, maxScore: 0 })
-      .subscribe((player: any) => {
-        if (player && player.id && player.id !== undefined)
+    const id = this.players?.length + 1;
+    const playerData: Player = {
+      nickName: this.nickName,
+      score: 0,
+      maxScore: 0,
+      id: id,
+    };
+    if (navigator.onLine) {
+      this.service.createPlayer(playerData).subscribe((player: any) => {
+        if (player && player.id && player.id !== undefined) {
           this.router.navigate(['/game', player.id]);
+        }
       });
+    } else {
+      this.storage.setPlayerData(playerData);
+      this.players = this.storage.loadPlayers();
+      this.players.push(playerData);
+      this.storage.setPlayers(this.players);
+      this.router.navigate(['/game', id]);
+    }
   }
 
   loadPlayer() {
-    this.service.getPlayerByName(this.nickName).subscribe((resp: any) => {
-      if (resp.length > 0) this.router.navigate(['/game', resp[0]?.id]);
-    });
+    if (navigator.onLine) {
+      this.service.getPlayerByName(this.nickName).subscribe((resp: any) => {
+        if (resp.length > 0) this.router.navigate(['/game', resp[0]?.id]);
+      });
+    } else {
+      const player = this.storage
+        .loadPlayers()
+        .filter((player: Player) => player.nickName === this.nickName);
+      if (player.length > 0) this.router.navigate(['/game', player[0].id]);
+    }
   }
 
   openDialog(): void {

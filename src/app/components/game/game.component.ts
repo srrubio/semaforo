@@ -12,6 +12,7 @@ import { LocalStorageService } from '../../services/local-storage.service';
 })
 export class GameComponent implements OnInit, OnDestroy {
   player!: Player;
+  players!: Player[];
   color: string = 'red';
   interval: any;
   playerId!: number;
@@ -31,11 +32,23 @@ export class GameComponent implements OnInit, OnDestroy {
     this.route.params.subscribe((params: any) => {
       this.playerId = params['id'];
     });
-    if (this.storage.loadPlayerData()) {
-      this.player = this.storage.loadPlayerData();
+    this.checkStorage();
+  }
+
+  checkStorage() {
+    if (!navigator.onLine) {
+      this.players = this.storage.loadPlayers();
+      this.players.filter((player: Player) => {
+        if (player.id === Number(this.playerId)) this.player = player;
+      });
       this.startGame();
     } else {
-      this.getJugadorData();
+      if (this.storage.loadPlayerData()) {
+        this.player = this.storage.loadPlayerData();
+        this.startGame();
+      } else {
+        this.getJugadorData();
+      }
     }
   }
 
@@ -68,18 +81,30 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   setStorageData(player: Player) {
-    this.storage.savePlayerData(player);
+    this.storage.setPlayerData(player);
+    this.players = this.storage.loadPlayers()?.map((player: Player) => {
+      if (player.id === Number(this.playerId)) {
+        return this.player;
+      } else return player;
+    });
+    this.storage.setPlayers(this.players);
   }
 
   save() {
-    this.service.updatePlayer(this.playerId, this.player).subscribe();
-    this.storage.removePlayerData();
+    if (navigator.onLine) {
+      this.service.updatePlayer(this.playerId, this.player).subscribe();
+      this.storage.removePlayerData();
+    } else {
+      this.setStorageData(this.player);
+    }
   }
 
   getJugadorData() {
-    this.service.getPlayer(this.playerId).subscribe((data: Player) => {
-      this.player = data;
-      this.startGame();
+    this.service.getPlayer(this.playerId).subscribe((data: Player | null) => {
+      if (data) {
+        this.player = data;
+        this.startGame();
+      }
     });
   }
 

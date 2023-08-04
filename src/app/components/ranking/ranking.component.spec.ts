@@ -10,6 +10,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { PLAYERS_MOCK } from '../../mocks/test.mocks';
 import { Player } from '../../interfaces/player';
 import { of } from 'rxjs';
+import { MatTableModule } from '@angular/material/table';
 
 describe('RankingComponent', () => {
   let component: RankingComponent;
@@ -26,6 +27,7 @@ describe('RankingComponent', () => {
         MatCardModule,
         MatDialogModule,
         HttpClientModule,
+        MatTableModule,
       ],
       providers: [PlayerService],
     });

@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DialogComponent } from './dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 describe('DialogComponent', () => {
   let component: DialogComponent;
@@ -9,6 +10,7 @@ describe('DialogComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [DialogComponent],
+      imports: [MatDialogModule],
     });
     fixture = TestBed.createComponent(DialogComponent);
     component = fixture.componentInstance;

@@ -9,13 +9,14 @@ import { Router } from '@angular/router';
 import { DeviceService } from '../../services/device.service';
 import { Player } from 'src/app/interfaces/player';
 import { of } from 'rxjs';
-import { PLAYER_MOCK } from '../../mocks/test.mocks';
+import { PLAYERS_MOCK, PLAYER_MOCK } from '../../mocks/test.mocks';
 
 describe('GameComponent', () => {
   let component: GameComponent;
   let fixture: ComponentFixture<GameComponent>;
   let service: PlayerService;
   let router: Router;
+  let players: Player[] = PLAYERS_MOCK;
   let player: Player = PLAYER_MOCK;
 
   beforeEach(() => {
@@ -84,6 +85,7 @@ describe('GameComponent', () => {
         nickName: 'Player 1',
         score: 1,
         maxScore: 15,
+        id: 1,
       };
 
       component.move('left');
@@ -102,6 +104,7 @@ describe('GameComponent', () => {
         nickName: 'Player 1',
         score: 10,
         maxScore: 15,
+        id: 1,
       };
 
       component.move('right');
@@ -116,12 +119,14 @@ describe('GameComponent', () => {
     });
 
     it('should get high score', () => {
+      component.players = players;
       component.color = 'green';
       component.lastButton = 'left';
       component.player = {
         nickName: 'Player 1',
         score: 15,
         maxScore: 15,
+        id: 1,
       };
 
       component.move('right');
@@ -136,6 +141,7 @@ describe('GameComponent', () => {
         nickName: 'Player 1',
         score: 10,
         maxScore: 15,
+        id: 1,
       };
       const spy = jest.spyOn(component, 'save');
 
