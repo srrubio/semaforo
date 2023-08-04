@@ -5,14 +5,10 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build:prod": "ng build && json-server --watch src/app/mocks/list.json --port 3000",
-    "build:mock": "npm install json-server && json-server --watch src/app/mocks/list.json --port 3000",
     "watch": "ng build --watch --configuration development",
-    "mock": "json-server --watch src/app/mocks/list.json",
     "test": "jest",
     "test:watch": "jest --watchAll",
-    "test:coverage": "jest --coverage",
-    "test:detectOpenHandles": "jest --detectOpenHandles"
+    "test:coverage": "jest --coverage"
   },
   "private": true,
   "dependencies": {
