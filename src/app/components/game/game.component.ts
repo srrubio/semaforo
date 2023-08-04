@@ -38,7 +38,7 @@ export class GameComponent implements OnInit, OnDestroy {
   checkStorage() {
     if (!navigator.onLine) {
       this.players = this.storage.loadPlayers();
-      this.players.filter((player: Player) => {
+      this.players?.filter((player: Player) => {
         if (player.id === Number(this.playerId)) this.player = player;
       });
       this.startGame();

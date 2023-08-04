@@ -9,11 +9,13 @@ import { DeviceService } from '../../services/device.service';
 import { Player } from 'src/app/interfaces/player';
 import { of } from 'rxjs';
 import { PLAYERS_MOCK, PLAYER_MOCK } from '../../mocks/test.mocks';
+import { LocalStorageService } from '../../services/local-storage.service';
 
 describe('GameComponent', () => {
   let component: GameComponent;
   let fixture: ComponentFixture<GameComponent>;
   let service: PlayerService;
+  let storage: LocalStorageService;
   let players: Player[] = PLAYERS_MOCK;
   let player: Player = PLAYER_MOCK;
 
@@ -26,6 +28,7 @@ describe('GameComponent', () => {
     fixture = TestBed.createComponent(GameComponent);
     component = fixture.componentInstance;
     service = TestBed.inject(PlayerService);
+    storage = TestBed.inject(LocalStorageService);
     fixture.detectChanges();
   });
 
@@ -33,9 +36,51 @@ describe('GameComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should save', () => {
-    component.back();
-    component.save();
+  describe('checkStore', () => {
+    it('should load data offline', () => {
+      component.playerId = 1;
+      jest.spyOn(navigator, 'onLine', 'get').mockReturnValue(false);
+      const spyStorage = jest
+        .spyOn(storage, 'loadPlayers')
+        .mockReturnValue(players);
+
+      component.checkStorage();
+      expect(spyStorage).toHaveBeenCalled();
+      component.players = players;
+      expect(component.player.id).toBe(component.playerId);
+      component.player = player;
+
+      expect(component.players).toEqual(players);
+      component.startGame();
+    });
+
+    it('should load data online', () => {
+      jest.spyOn(navigator, 'onLine', 'get').mockReturnValue(true);
+      const spyStoragePlayerData = jest
+        .spyOn(storage, 'loadPlayerData')
+        .mockReturnValue(player);
+
+      component.checkStorage();
+      expect(spyStoragePlayerData).toHaveBeenCalled();
+      component.player = player;
+      component.startGame();
+    });
+  });
+
+  describe('save', () => {
+    it('should save when is online', () => {
+      jest.spyOn(navigator, 'onLine', 'get').mockReturnValue(true);
+      const spyUpdate = jest.spyOn(service, 'updatePlayer');
+      component.save();
+
+      expect(spyUpdate).toHaveBeenCalled();
+    });
+    it('should save data on localStore', () => {
+      jest.spyOn(navigator, 'onLine', 'get').mockReturnValue(false);
+      component.save();
+
+      component.setStorageData(player);
+    });
   });
 
   it('should go back', () => {
