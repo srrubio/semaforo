@@ -1,17 +1,17 @@
-mat-card{
-    margin-top: 2rem;
+.container {
+    height: calc(100vh - 4rem);
+
     .ranking-container {
-        padding: 8rem;
         display: flex;
         flex-direction: column;
         flex-wrap: nowrap;
         justify-content: center;
         align-items: center;
         align-content: center;
-        height: 100vh;
 
         .podium-img {
-            margin-bottom: 1rem;
+            padding-top: 3rem;
+            padding-bottom: 1rem;
         }
 
         table {
@@ -27,5 +27,5 @@ mat-card{
                 }
             }
         }
-    }
+    }    
 }

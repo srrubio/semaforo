@@ -11,27 +11,25 @@
   </a>
   <button class="btn btn-secondary" (click)="back()">Back</button>
 </nav>
-<div>
-  <mat-card class="col-lg-12 col-md-12 col-s-12 col-xs-12">
-    <mat-card-content class="ranking-container">
-      <img
-        class="podium-img"
-        src="../../../assets/icons/podium.png"
-        alt="podium"
-      />
-      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-        <ng-container
-          *ngFor="let column of displayedColumns"
-          [matColumnDef]="column"
-        >
-          <td mat-cell *matCellDef="let player; let i = index">
-            <ng-container *ngIf="column === 'position' && i < 3">
-              <img src="../../../assets/icons/{{ i + 1 }}.png" /> </ng-container
-            >{{ player[column] }}
-          </td>
-        </ng-container>
-        <tr mat-row *matRowDef="let player; columns: displayedColumns"></tr>
-      </table>
-    </mat-card-content>
-  </mat-card>
+<div class="container col-lg-12 col-md-12 col-s-12 col-xs-12">
+  <div class="ranking-container">
+    <img
+      class="podium-img"
+      src="../../../assets/icons/podium.png"
+      alt="podium"
+    />
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <ng-container
+        *ngFor="let column of displayedColumns"
+        [matColumnDef]="column"
+      >
+        <td mat-cell *matCellDef="let player; let i = index">
+          <ng-container *ngIf="column === 'position' && i < 3">
+            <img src="../../../assets/icons/{{ i + 1 }}.png" /> </ng-container
+          >{{ player[column] }}
+        </td>
+      </ng-container>
+      <tr mat-row *matRowDef="let player; columns: displayedColumns"></tr>
+    </table>
+  </div>
 </div>
