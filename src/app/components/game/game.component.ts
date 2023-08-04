@@ -31,9 +31,12 @@ export class GameComponent implements OnInit, OnDestroy {
     this.route.params.subscribe((params: any) => {
       this.playerId = params['id'];
     });
-    this.storage.loadPlayerData()
-      ? (this.player = this.storage.loadPlayerData())
-      : this.getJugadorData();
+    if (this.storage.loadPlayerData()) {
+      this.player = this.storage.loadPlayerData();
+      this.startGame();
+    } else {
+      this.getJugadorData();
+    }
   }
 
   ngOnDestroy() {
