@@ -76,7 +76,7 @@ export class GameComponent implements OnInit, OnDestroy {
   getJugadorData() {
     this.service.getPlayer(this.playerId).subscribe((data: Player) => {
       this.player = data;
-      this.startInterval();
+      this.startGame();
     });
   }
 
@@ -84,19 +84,16 @@ export class GameComponent implements OnInit, OnDestroy {
     clearInterval(this.interval);
   }
 
-  startInterval() {
-    this.color = 'green';
-    this.interval = setInterval(() => {
-      this.greenLight = this.calculateGreenTime(this.player.score);
-      setTimeout(() => {
-        this.color = 'red';
-      }, this.greenLight);
-      setTimeout(() => {
-        this.color = 'green';
-      }, 3000);
-    }, 10000);
+  startGame() {
+    let intervalTime =
+      this.color === 'green'
+        ? this.calculateGreenTime(this.player.score)
+        : 3000;
+    this.interval = setTimeout(() => {
+      this.color = this.color === 'green' ? 'red' : 'green';
+      this.startGame();
+    }, intervalTime);
   }
-
   random(min: number, max: number): number {
     return Math.random() * (max - min) + min;
   }
