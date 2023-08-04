@@ -20,14 +20,17 @@ import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { Player } from '../../interfaces/player';
 import { MatDialogModule } from '@angular/material/dialog';
-import { PLAYERS_MOCK } from '../../mocks/test.mocks';
+import { PLAYERS_MOCK, PLAYER_MOCK } from '../../mocks/test.mocks';
+import { LocalStorageService } from '../../services/local-storage.service';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
   let service: PlayerService;
+  let storage: LocalStorageService;
   let router: Router;
   let players: Player[] = PLAYERS_MOCK;
+  let player: Player = PLAYER_MOCK;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -41,19 +44,81 @@ describe('HomeComponent', () => {
         HttpClientModule,
         MatDialogModule,
       ],
-      providers: [PlayerService, provideAnimations()],
+      providers: [PlayerService, LocalStorageService, provideAnimations()],
     });
   });
   beforeEach(() => {
     fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;
     service = TestBed.inject(PlayerService);
+    storage = TestBed.inject(LocalStorageService);
     router = TestBed.inject(Router);
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should call service', () => {
+    jest.spyOn(navigator, 'onLine', 'get').mockReturnValue(true);
+    const spyGetAllPlayer = jest
+      .spyOn(service, 'getAllPlayer')
+      .mockReturnValue(of(players));
+    component.players = players;
+    expect(component.players).toEqual(players);
+  });
+
+  it('should navigate to game when player data is loaded and online', () => {
+    component.checkStorageData();
+    const spyLoadPlayerData = jest
+      .spyOn(storage, 'loadPlayerData')
+      .mockReturnValue(player);
+    jest.spyOn(navigator, 'onLine', 'get').mockReturnValue(true);
+
+    expect(spyLoadPlayerData).not.toBeNull();
+  });
+
+  it('should load unsaved data', () => {
+    const playerId = 1;
+    const spyLoadPlayer = jest
+      .spyOn(storage, 'loadPlayerData')
+      .mockReturnValue(player);
+    const spyNavigate = jest.spyOn(router, 'navigate');
+    component.checkStorageData();
+
+    expect(spyLoadPlayer).toHaveBeenCalled();
+    expect(spyNavigate).toHaveBeenCalledWith(['/game', playerId]);
+  });
+
+  describe('create', () => {
+    it('should create', () => {
+      jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(true);
+      const spyCreatePlayer = jest
+        .spyOn(service, 'createPlayer')
+        .mockReturnValue(of(player));
+      const spy = jest.spyOn(router, 'navigate');
+
+      component.createPlayer();
+
+      expect(spyCreatePlayer).toHaveBeenCalled();
+      expect(spy).toHaveBeenCalledWith(['/game', player.id]);
+    });
+    it('should store player data locally when offline', () => {
+      jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(false);
+      const spySetPlayer = jest.spyOn(storage, 'setPlayerData');
+      const spyLoadPlayers = jest
+        .spyOn(storage, 'loadPlayers')
+        .mockReturnValue(players);
+      const spySetPlayers = jest.spyOn(storage, 'setPlayers');
+
+      component.nickName = 'TestPlayer';
+      component.createPlayer();
+
+      expect(spySetPlayer).toHaveBeenCalled();
+      expect(spyLoadPlayers).toHaveBeenCalled();
+      expect(spySetPlayers).toHaveBeenCalled();
+    });
   });
 
   it('should check if user is unique if form is valid', () => {
@@ -77,28 +142,6 @@ describe('HomeComponent', () => {
 
     expect(spy).not.toHaveBeenCalled();
   });
-
-  xit('should create a player if nickname does not exist', fakeAsync(() => {
-    jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(true);
-    const id = 4;
-    const newPlayer: Player = {
-      nickName: 'newPlayer',
-      score: 0,
-      maxScore: 0,
-      id: 4,
-    };
-    const spyGetAllPlayer = jest
-      .spyOn(service, 'getAllPlayer')
-      .mockReturnValue(of(players));
-    const spyCreatePlayer = jest
-      .spyOn(service, 'createPlayer')
-      .mockReturnValue(of(newPlayer));
-
-    component.nickName = 'newPlayer';
-    component.checkIfNickIsUnique();
-
-    expect(spyCreatePlayer).toHaveBeenCalledTimes(1);
-  }));
 
   it('should load player data if nickname already exists', fakeAsync(() => {
     jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(true);

@@ -22,10 +22,10 @@ export class GameComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     private service: PlayerService,
     private deviceService: DeviceService,
-    private storage: LocalStorageService
+    private storage: LocalStorageService,
+    public router: Router
   ) {}
 
   ngOnInit() {

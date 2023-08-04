@@ -5,7 +5,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { PlayerService } from '../../services/player.service';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { Router } from '@angular/router';
 import { DeviceService } from '../../services/device.service';
 import { Player } from 'src/app/interfaces/player';
 import { of } from 'rxjs';
@@ -15,7 +14,6 @@ describe('GameComponent', () => {
   let component: GameComponent;
   let fixture: ComponentFixture<GameComponent>;
   let service: PlayerService;
-  let router: Router;
   let players: Player[] = PLAYERS_MOCK;
   let player: Player = PLAYER_MOCK;
 
@@ -28,7 +26,6 @@ describe('GameComponent', () => {
     fixture = TestBed.createComponent(GameComponent);
     component = fixture.componentInstance;
     service = TestBed.inject(PlayerService);
-    router = TestBed.inject(Router);
     fixture.detectChanges();
   });
 
@@ -42,7 +39,7 @@ describe('GameComponent', () => {
   });
 
   it('should go back', () => {
-    const spy = jest.spyOn(router, 'navigate');
+    const spy = jest.spyOn(component.router, 'navigate');
     component.back();
 
     expect(spy).toHaveBeenCalledWith(['/home']);

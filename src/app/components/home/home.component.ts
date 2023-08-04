@@ -14,12 +14,13 @@ import { LocalStorageService } from '../../services/local-storage.service';
 export class HomeComponent implements OnInit {
   nickName!: string;
   players!: Player[];
+  player!: Player;
 
   constructor(
-    private router: Router,
     private service: PlayerService,
     private dialog: MatDialog,
-    private storage: LocalStorageService
+    private storage: LocalStorageService,
+    public router: Router
   ) {}
 
   ngOnInit(): void {
@@ -27,17 +28,18 @@ export class HomeComponent implements OnInit {
   }
 
   checkStorageData() {
-    if (navigator.onLine) {
-      this.service.getAllPlayer().subscribe((players: Player[]) => {
-        this.players = players;
-        this.storage.setPlayers(players);
-      });
+    if (this.storage.loadPlayerData()) {
+      this.player = this.storage.loadPlayerData();
+      if (this.player.id) this.router.navigate(['/game', this.player?.id]);
     } else {
-      this.players = this.storage.loadPlayers();
-    }
-
-    if (this.storage.loadPlayerData() && navigator.onLine) {
-      this.router.navigate(['/game', this.storage.loadPlayerData().id]);
+      if (navigator.onLine) {
+        this.service.getAllPlayer().subscribe((players: Player[]) => {
+          this.players = players;
+          this.storage.setPlayers(players);
+        });
+      } else {
+        this.players = this.storage.loadPlayers();
+      }
     }
   }
 
